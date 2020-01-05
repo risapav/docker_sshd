@@ -1,11 +1,15 @@
 # docker_ssh_server
 fresh ubuntu system with running ssh server
 
-## build with this:
-docker build -t ssh_server .
+## How to build container
 
-## run this command
-docker run -d ssh_server
+    It is very easy:
+        $ docker build -t ssh_server .
+
+## How to run container
+
+    You should run container:
+        $ docker run -d -P --name sshd ssh_server
 
 ## Security
 
