@@ -13,9 +13,6 @@ If you are making the container accessible from the internet you'll probably wan
 
     Change the root password: docker exec -ti ssh_server passwd
     Don't allow passwords at all, use keys instead:
-
-$ docker exec ssh_server passwd -d root
-
-$ docker cp file_on_host_with_allowed_public_keys ssh_server:/root/.ssh/authorized_keys
-
-$ docker exec ssh_server chown root:root /root/.ssh/authorized_keys
+        $ docker exec ssh_server passwd -d root
+        $ docker cp file_on_host_with_allowed_public_keys ssh_server:/root/.ssh/authorized_keys
+        $ docker exec ssh_server chown root:root /root/.ssh/authorized_keys
