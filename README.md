@@ -9,7 +9,7 @@ It is very easy:
 
 ### or
 
-    $ docker build https://github.com/risapav/docker_ssh_server.git
+    $ docker build https://github.com/risapav/docker_ssh_server.git -t ssh_server
 
 ## How to run container
 
