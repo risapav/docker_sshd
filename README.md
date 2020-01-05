@@ -1,9 +1,9 @@
 # docker_ssh_server
-fresh ubuntu szstem with running ssh server
+fresh ubuntu system with running ssh server
 
-# build with this:
+## build with this:
 docker build -t ssh_server .
 
-# run this command
+## run this command
 docker run -d ssh_server
 
