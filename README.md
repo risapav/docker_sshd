@@ -1,4 +1,4 @@
-# docker_ssh_server
+# docker_sshd
 fresh ubuntu system with running ssh server
 
 ## How to build container
