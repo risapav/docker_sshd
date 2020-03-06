@@ -5,23 +5,23 @@ fresh ubuntu system with running ssh server
 
 It is very easy:
 
-    $ docker build -t ssh_server .
+    $ docker build -t sshd .
 
 ### or
 
-    $ docker build https://github.com/risapav/docker_ssh_server.git -t ssh_server
+    $ docker build https://github.com/risapav/docker_sshd.git -t sshd
 
 ## How to run container
 
 You should run container:
 
-    $ docker run -d -P --name sshd ssh_server
+    $ docker run -d -P --name sshd sshd
 
 ## Run a test_sshd container
 
 Then run it. You can then use docker port to find out what host port the container’s port 22 is mapped to:
 
-    $ docker run -d -P --name test_sshd ssh_server
+    $ docker run -d -P --name test_sshd sshd
     $ docker port test_sshd 22
 
     0.0.0.0:49154
@@ -42,11 +42,11 @@ And now you can ssh as root on the container’s IP address (you can find it wit
 
 If you are making the container accessible from the internet you'll probably want to secure it bit. You can do one of the following two things after launching the container:
 
-    Change the root password: docker exec -ti ssh_server passwd
+    Change the root password: docker exec -ti sshd passwd
     Don't allow passwords at all, use keys instead:
-        $ docker exec ssh_server passwd -d root
-        $ docker cp file_on_host_with_allowed_public_keys ssh_server:/root/.ssh/authorized_keys
-        $ docker exec ssh_server chown root:root /root/.ssh/authorized_keys
+        $ docker exec sshd passwd -d root
+        $ docker cp file_on_host_with_allowed_public_keys sshd:/root/.ssh/authorized_keys
+        $ docker exec sshd chown root:root /root/.ssh/authorized_keys
 
 ## Environment variables
 
@@ -62,4 +62,4 @@ Finally, clean up after your test by stopping and removing the container, and th
 
     $ docker container stop test_sshd
     $ docker container rm test_sshd
-    $ docker image rm ssh_server
+    $ docker image rm sshd
