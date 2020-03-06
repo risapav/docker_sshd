@@ -1,10 +1,13 @@
-FROM ubuntu:latest
+FROM ubuntu
 
 MAINTAINER Pavol Risa "risapav at gmail"
 
 #update OS
 RUN apt-get update \
-	&& apt-get install -y openssh-server \
+	&& apt-get install -y \
+		openssh-server \
+		openocd \
+		mc \
 	&& apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 	
