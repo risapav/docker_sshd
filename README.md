@@ -1,15 +1,25 @@
 # docker_sshd
-fresh ubuntu system with running ssh server
+fresh debian system with running ssh server
 
-## How to build container
+## Clone
 
-It is very easy:
+### Make sure git is installed.
+```sh
+git clone --recurse-submodules git@github.com:risapav/docker_sshd.git && cd docker_sshd
+```
 
-    $ docker build -t sshd .
+### Prepare Docker environment
 
-### or
+Docker should be installed and running.
 
-    $ docker build https://github.com/risapav/docker_sshd.git -t sshd
+```sh
+docker build https://github.com/risapav/docker_sshd.git -t docker_sshd
+
+or
+
+docker build -t sshd .
+```
+
 
 ## How to run container
 

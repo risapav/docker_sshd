@@ -1,26 +1,33 @@
-FROM ubuntu
+FROM debian:stable-slim
 
-MAINTAINER Pavol Risa "risapav at gmail"
+# timezone
+RUN apt update && apt install -y \
+      tzdata; \
+    apt clean;
+    
+# sshd
+RUN mkdir /var/run/sshd; \
+    apt install -y \
+      openssh-server \
+      mc; \
+    sed -i 's/^#\(PermitRootLogin\) .*/\1 yes/' /etc/ssh/sshd_config; \
+    sed -i 's/^\(UsePAM yes\)/# \1/' /etc/ssh/sshd_config; \
+    apt clean;
 
-#update OS
-RUN apt-get update \
-	&& apt-get install -y \
-		openssh-server \
-		mc \
-	&& apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-	
-RUN mkdir /var/run/sshd
-RUN echo 'root:root' | chpasswd
+# entrypoint
+RUN { \
+    echo '#!/bin/bash -eu'; \
+    echo 'ln -fs /usr/share/zoneinfo/${TZ} /etc/localtime'; \
+    echo 'echo "root:${ROOT_PASSWORD}" | chpasswd'; \
+    echo 'exec "$@"'; \
+    } > /usr/local/bin/entry_point.sh; \
+    chmod +x /usr/local/bin/entry_point.sh;
 
-RUN sed -ri 's/^#?PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config
-RUN sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config
+ENV TZ Europe/Bratislava
 
-RUN mkdir /root/.ssh
-
-ENV NOTVISIBLE "in users profile"
-RUN echo "export VISIBLE=now" >> /etc/profile    
+ENV ROOT_PASSWORD root
 
 EXPOSE 22
 
-CMD    ["/usr/sbin/sshd", "-D"]
+ENTRYPOINT ["entry_point.sh"]
+CMD    ["/usr/sbin/sshd", "-D", "-e"]
