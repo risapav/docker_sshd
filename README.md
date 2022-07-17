@@ -16,8 +16,9 @@ Prepare Docker environment, Docker should be installed and running.
 docker build https://github.com/risapav/docker_sshd.git -t docker_sshd
 
 or
+RSA_KEY ?= $(shell cat ~/.ssh/id_rsa.pub)
 
-docker build -t sshd .
+docker build --build-arg SSH_PUB_KEY="$(cat ~/.ssh/id_rsa.pub)" --build-arg USERNAME="$(USER)" -t sshd .
 ```
 
 ## How to run container
@@ -25,14 +26,33 @@ docker build -t sshd .
 You should run container:
     
 ```sh    
-
 # with presets from Dockerfile
 docker run -d -P --name sshd sshd
 
 or
 
 # with changed environment variables
-docker run -d --name sshd -e TZ=Asia/Singapore -e ROOT_PASSWORD=root -p 8022:22 sshd
+docker run -d --name sshd -e TZ=Asia/Tokyo -e ROOT_PASSWORD=root -p 8022:22 sshd
+```
+
+## How to use
+
+This container can be accessed by SSH and SFTP clients.
+
+```sh 
+docker run -d --name sshd -e TZ=Asia/Tokyo -e ROOT_PASSWORD=root -p 8022:22 sshd
+```
+
+You can add extra ports and volumes as follows if you want.
+
+```sh 
+docker run -d --name sshd -e TZ=Asia/Tokyo -e ROOT_PASSWORD=root -p 8022:22 -p 8080:80 -v /my/own/datadir:/var/www/html sshd
+```
+
+SCP command can be used for transferring files.
+
+```sh 
+scp -P 8022 -r /my/own/apache2.conf root@localhost:/etc/apache2/apache2.conf
 ```
 
 ## How to stop and remove container
@@ -49,32 +69,47 @@ docker rm <CONTAINER ID>
 
 Then run it. You can then use docker port to find out what host port the container’s port 22 is mapped to:
 
-    $ docker run -d -P --name test_sshd sshd
-    $ docker port test_sshd 22
+```sh
+docker run -d -P --name test_sshd sshd
+docker port test_sshd 22
 
-    0.0.0.0:49154
+0.0.0.0:49154
+
+or 
+
+docker inspect <id-or-name> | grep 'IPAddress' | head -n 1
+```
 
 And now you can ssh as root on the container’s IP address (you can find it with docker inspect) or on port 49154 of the Docker daemon’s host IP address (ip address or ifconfig can tell you that) or localhost if on the Docker daemon host:
 
-    $ ssh root@192.168.1.2 -p 49154
+```sh
+ssh root@192.168.1.2 -p 49154
 
-### or
+or
 
-    $ ssh root@localhost -p 49154
+ssh root@localhost -p 49154
+```
 
-### The password is ``screencast``.
+## Logging
 
-    root@f38c87f2a42d:/#
+This container logs the beginning, authentication, and termination of each connection.
+Use the following command to view the logs in real time.
+
+```sh
+docker logs -f sshd
+```
 
 ## Security
 
 If you are making the container accessible from the internet you'll probably want to secure it bit. You can do one of the following two things after launching the container:
 
-    Change the root password: docker exec -ti sshd passwd
-    Don't allow passwords at all, use keys instead:
-        $ docker exec sshd passwd -d root
-        $ docker cp file_on_host_with_allowed_public_keys sshd:/root/.ssh/authorized_keys
-        $ docker exec sshd chown root:root /root/.ssh/authorized_keys
+```sh
+Change the root password: docker exec -ti sshd passwd
+Don't allow passwords at all, use keys instead:
+$ docker exec sshd passwd -d root
+$ docker cp file_on_host_with_allowed_public_keys sshd:/root/.ssh/authorized_keys
+$ docker exec sshd chown root:root /root/.ssh/authorized_keys
+```
 
 ## Environment variables
 
