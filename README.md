@@ -5,7 +5,7 @@ fresh debian system with running ssh server
 
 ### Make sure git is installed.
 ```sh
-git clone --recurse-submodules git@github.com:risapav/docker_sshd.git && cd docker_sshd
+git clone git@github.com:risapav/docker_sshd.git && cd docker_sshd
 ```
 
 ### Prepare Docker environment
@@ -20,12 +20,31 @@ or
 docker build -t sshd .
 ```
 
-
 ## How to run container
 
 You should run container:
+    
+```sh    
+docker run -d -P --name sshd sshd
 
-    $ docker run -d -P --name sshd sshd
+or
+
+docker run -d --name sshd \  
+   -e TZ=Asia/Tokyo \  
+   -e ROOT_PASSWORD=root \  
+   -p 8022:22 \  
+   sshd
+```
+
+## How to stop and remove container
+
+You should look for Container Id, to would like to remove:
+ 
+```sh    
+docker ps -a
+docker stop <CONTAINER ID>
+docker rm <CONTAINER ID>
+```
 
 ## Run a test_sshd container
 
@@ -66,10 +85,3 @@ If you’re setting values in the Dockerfile using ENV, you need to push them to
 
 If you need to passdocker run -e ENV=value values, you need to write a short script to do the same before you start sshd -D and then replace the CMD with that script.
 
-## Clean up
-
-Finally, clean up after your test by stopping and removing the container, and then removing the image.
-
-    $ docker container stop test_sshd
-    $ docker container rm test_sshd
-    $ docker image rm sshd
