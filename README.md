@@ -3,14 +3,14 @@ fresh debian system with running ssh server
 
 ## Clone
 
-### Make sure git is installed.
+Make sure git is installed.
 ```sh
 git clone git@github.com:risapav/docker_sshd.git && cd docker_sshd
 ```
 
-### Prepare Docker environment
+## Build
 
-Docker should be installed and running.
+Prepare Docker environment, Docker should be installed and running.
 
 ```sh
 docker build https://github.com/risapav/docker_sshd.git -t docker_sshd
@@ -25,15 +25,14 @@ docker build -t sshd .
 You should run container:
     
 ```sh    
+
+# with presets from Dockerfile
 docker run -d -P --name sshd sshd
 
 or
 
-docker run -d --name sshd \  
-   -e TZ=Asia/Tokyo \  
-   -e ROOT_PASSWORD=root \  
-   -p 8022:22 \  
-   sshd
+# with changed environment variables
+docker run -d --name sshd -e TZ=Asia/Singapore -e ROOT_PASSWORD=root -p 8022:22 sshd
 ```
 
 ## How to stop and remove container
