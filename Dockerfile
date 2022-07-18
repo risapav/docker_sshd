@@ -9,10 +9,14 @@ ARG USERNAME
 #########################################################################################################
 # prepare sshd server
 #########################################################################################################
+
+# environment settings timezone -e TZ=Asia/Tokyo
 ENV TZ Europe/Bratislava
 
+# environment settins -e ROOT_PASSWORD=pokus
 ENV ROOT_PASSWORD root
 
+# ToDo user password changed during build
 ENV USER_PASSWORD ${USERNAME}
 
 EXPOSE 22
@@ -52,8 +56,6 @@ RUN apt update && apt install -y \
       echo 'echo "key #### $2"'; \
       echo 'useradd -d /home/$1 -m $1'; \
       echo 'echo "$1:${USER_PASSWORD}" | chpasswd'; \
-      echo '# adduser $1 admin'; \
-      echo '# adduser --home /home/$1'; \
       echo 'mkdir -p /home/$1/.ssh'; \
       echo 'chmod 700 /home/$1/.ssh'; \
       echo 'echo $2 > /home/$1/.ssh/authorized_keys'; \
