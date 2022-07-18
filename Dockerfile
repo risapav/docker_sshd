@@ -43,7 +43,7 @@ ARG USERNAME
 # user account
 RUN if [[ -nz "$USERNAME" ]] ; \ 
   then \ 
-    echo "Configure with user account --->  ${USERNAME}" \ 
+    echo "Configuring user account --->  ${USERNAME}" \ 
     echo "Public key ---> ${SSH_PUB_KEY}" \
     { \
       echo '#!/bin/bash -eu'; \
@@ -61,7 +61,7 @@ RUN if [[ -nz "$USERNAME" ]] ; \
     chmod +x /tmp/user_account.sh; \
     /tmp/user_account.sh; \
   else \
-    echo "Configuring only with root access..."; \
+    echo "Configuring with root access only..."; \
   fi
 
 ENTRYPOINT ["entry_point.sh"]
