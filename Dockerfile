@@ -1,5 +1,11 @@
 FROM debian:stable-slim
 
+# supply your pub key via `--build-arg ssh_pub_key="$(cat ~/.ssh/id_rsa.pub)"` when running `docker build`
+ARG SSH_PUB_KEY
+
+# user and group settings `--build-arg USERNAME=$USER`
+ARG USERNAME
+
 #########################################################################################################
 # prepare sshd server
 #########################################################################################################
@@ -29,19 +35,11 @@ RUN apt update && apt install -y \
     echo 'echo "root:${ROOT_PASSWORD}" | chpasswd'; \
     echo 'exec "$@"'; \
   } > /usr/local/bin/entry_point.sh; \
-  chmod +x /usr/local/bin/entry_point.sh; 
-
+  chmod +x /usr/local/bin/entry_point.sh; \
 #########################################################################################################
 # create user account
 #########################################################################################################
-# supply your pub key via `--build-arg ssh_pub_key="$(cat ~/.ssh/id_rsa.pub)"` when running `docker build`
-ARG SSH_PUB_KEY
-
-# user and group settings
-ARG USERNAME
-
-# user account
-RUN if [ ! -z "$USERNAME" ]; \ 
+  if [ ! -z "$USERNAME" ]; \ 
   then \ 
     echo "############################################"; \
     echo "Configuring with user ${USERNAME} access ..."; \
@@ -51,7 +49,7 @@ RUN if [ ! -z "$USERNAME" ]; \
       echo 'echo "username #### $1"';\
       echo 'echo "key #### $2"'; \
       echo 'useradd -d /home/$1 -m $1'; \
-      echo 'adduser $1 admin'; \
+      echo '# adduser $1 admin'; \
       echo '# adduser --home /home/$1'; \
       echo 'mkdir -p /home/$1/.ssh'; \
       echo 'chmod 700 /home/$1/.ssh'; \
