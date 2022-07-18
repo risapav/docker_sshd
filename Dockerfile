@@ -1,7 +1,8 @@
 FROM debian:stable-slim
 
-#USER root
-
+#########################################################################################################
+# prepare sshd server
+#########################################################################################################
 # timezone
 RUN apt update && apt install -y \
     tzdata; \
@@ -24,6 +25,9 @@ RUN apt update && apt install -y \
   } > /usr/local/bin/entry_point.sh; \
   chmod +x /usr/local/bin/entry_point.sh; 
 
+#########################################################################################################
+# create user account
+#########################################################################################################
 # supply your pub key via `--build-arg ssh_pub_key="$(cat ~/.ssh/id_rsa.pub)"` when running `docker build`
 ARG SSH_PUB_KEY
 
