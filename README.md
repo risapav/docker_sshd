@@ -38,6 +38,8 @@ or
 
 # with changed environment variables
 docker run -d --name sshd -e TZ=Asia/Tokyo -e ROOT_PASSWORD=root -p 8022:22 sshd
+
+docker run -d --name sshd -e TZ=Asia/Tokyo -e ROOT_PASSWORD=root -e USER_PASSWORD=$USER -p 8022:22 sshd
 ```
 
 ## How to use

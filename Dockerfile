@@ -13,6 +13,8 @@ ENV TZ Europe/Bratislava
 
 ENV ROOT_PASSWORD root
 
+ENV USER_PASSWORD ${USERNAME}
+
 EXPOSE 22
 
 # timezone
@@ -49,6 +51,7 @@ RUN apt update && apt install -y \
       echo 'echo "username #### $1"';\
       echo 'echo "key #### $2"'; \
       echo 'useradd -d /home/$1 -m $1'; \
+      echo 'echo "$1:${USER_PASSWORD}" | chpasswd'; \
       echo '# adduser $1 admin'; \
       echo '# adduser --home /home/$1'; \
       echo 'mkdir -p /home/$1/.ssh'; \
