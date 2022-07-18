@@ -13,11 +13,13 @@ git clone git@github.com:risapav/docker_sshd.git && cd docker_sshd
 Prepare Docker environment, Docker should be installed and running.
 
 ```sh
+# building pure sshd resvice with root access
 docker build https://github.com/risapav/docker_sshd.git -t docker_sshd
 
 or
 RSA_KEY ?= $(shell cat ~/.ssh/id_rsa.pub)
 
+# building sshd service with root access and user access
 docker build --build-arg SSH_PUB_KEY="$(cat ~/.ssh/id_rsa.pub)" --build-arg USERNAME="$(USER)" -t sshd .
 ```
 
