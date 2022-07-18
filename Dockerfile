@@ -1,11 +1,5 @@
 FROM debian:stable-slim
 
-# supply your pub key via `--build-arg ssh_pub_key="$(cat ~/.ssh/id_rsa.pub)"` when running `docker build`
-ARG SSH_PUB_KEY
-
-# user and group settings
-ARG USERNAME
-
 #USER root
 
 # timezone
@@ -28,9 +22,16 @@ RUN apt update && apt install -y \
     echo 'echo "root:${ROOT_PASSWORD}" | chpasswd'; \
     echo 'exec "$@"'; \
   } > /usr/local/bin/entry_point.sh; \
-  chmod +x /usr/local/bin/entry_point.sh; \
+  chmod +x /usr/local/bin/entry_point.sh; 
+
+# supply your pub key via `--build-arg ssh_pub_key="$(cat ~/.ssh/id_rsa.pub)"` when running `docker build`
+ARG SSH_PUB_KEY
+
+# user and group settings
+ARG USERNAME
+
 # user account
-  { \
+RUN  { \
     echo '#!/bin/bash -eu'; \
     echo 'echo ${USERNAME};\
     echo 'echo ${SSH_PUB_KEY}; \
