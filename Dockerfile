@@ -30,22 +30,24 @@ RUN apt update && apt install -y \
   } > /usr/local/bin/entry_point.sh; \
   chmod +x /usr/local/bin/entry_point.sh; \
 # user account
-  echo "####################################################"; \
-  echo $USERNAME;\
-  echo $SSH_PUB_KEY; \
-  mkdir -p /home/$USERNAME/.ssh; \
-  adduser --home /home/$USERNAME $USERNAME; \
-#  useradd -m -U ${USERNAME}; \
-  chmod 700 /home/$USERNAME/.ssh; \
-  echo "$SSH_PUB_KEY" > /home/$USERNAME/.ssh/authorized_keys; \
-  chown $USERNAME:$USERNAME -R /home/$USERNAME; \
-  chmod 600 /home/$USERNAME/.ssh/authorized_keys;
+  { \
+    echo '#!/bin/bash -eu'; \
+    echo 'echo ${USERNAME};\
+    echo 'echo ${SSH_PUB_KEY}; \
+    echo 'mkdir -p /home/${USERNAME}/.ssh'; \
+    echo 'adduser --home /home/${USERNAME} ${USERNAME}'; \
+#  echo 'useradd -m -U ${USERNAME}'; \
+    echo 'chmod 700 /home/${USERNAME}/.ssh'; \
+    echo 'echo "${SSH_PUB_KEY}" > /home/${USERNAME}/.ssh/authorized_keys'; \
+    echo 'chown ${USERNAME}:${USERNAME} -R /home/${USERNAME}'; \
+    echo 'chmod 600 /home/${USERNAME}/.ssh/authorized_keys';
+  } > /tmp/user_account.sh; \
+  chmod +x /tmp/user_account.sh; \
+  /tmp/user_account.sh;
 
 ENV TZ Europe/Bratislava
 
 ENV ROOT_PASSWORD root
-
-#USER ${USERNAME}
 
 EXPOSE 22
 
