@@ -16,8 +16,8 @@ RUN apt update && apt install -y \
 # sshd
   mkdir /var/run/sshd; \
   apt install -y \
-    openssh-server \
-   # mc; \
+    #mc \
+    openssh-server; \
 # root permission
   sed -i 's/^#\(PermitRootLogin\) .*/\1 yes/' /etc/ssh/sshd_config; \
   sed -i 's/^\(UsePAM yes\)/# \1/' /etc/ssh/sshd_config; \
@@ -41,29 +41,33 @@ ARG SSH_PUB_KEY
 ARG USERNAME
 
 # user account
-RUN if [[ -nz "$USERNAME" ]] ; \ 
+RUN if [ ! -z "$USERNAME" ]; \ 
   then \ 
-    echo "Configuring user account --->  ${USERNAME}" \ 
-    echo "Public key ---> ${SSH_PUB_KEY}" \
+    echo "############################################"; \
+    echo "Configuring with user ${USERNAME} access ..."; \
+    echo "############################################"; \
     { \
-      echo '#!/bin/bash -eu'; \
-      echo 'echo ${USERNAME};\
-      echo 'echo ${SSH_PUB_KEY}; \
-      echo 'mkdir -p /home/${USERNAME}/.ssh'; \
-      echo 'adduser --home /home/${USERNAME} ${USERNAME}'; \
-      #  echo 'useradd -m -U ${USERNAME}'; \
-      echo 'chmod 700 /home/${USERNAME}/.ssh'; \
-      echo 'echo "${SSH_PUB_KEY}" > /home/${USERNAME}/.ssh/authorized_keys'; \
-      echo 'chown ${USERNAME}:${USERNAME} -R /home/${USERNAME}'; \
-      echo 'chmod 600 /home/${USERNAME}/.ssh/authorized_keys'; \
-      echo 'exec "$@"'; \
+      echo '#!/bin/bash'; \
+      echo 'echo "username #### $1"';\
+      echo 'echo "key #### $2"'; \
+      echo 'adduser --home /home/$1'; \
+      echo 'mkdir -p /home/$1/.ssh'; \
+      echo 'chmod 700 /home/$1/.ssh'; \
+      echo 'echo $2 > /home/$1/.ssh/authorized_keys'; \
+      echo 'chown $1:$1 -R /home/$1'; \
+      echo 'chmod 600 /home/$1/.ssh/authorized_keys'; \
     } > /tmp/user_account.sh; \
     chmod +x /tmp/user_account.sh; \
-    /tmp/user_account.sh; \
+    cat /tmp/user_account.sh; \
+    ls -la /tmp; \
+    /tmp/user_account.sh "${USERNAME}" "${SSH_PUB_KEY}"; \
   else \
+    echo "############################################"; \
     echo "Configuring with root access only..."; \
-  fi
+    echo "############################################"; \
+  fi;
 
 ENTRYPOINT ["entry_point.sh"]
+
 CMD    ["/usr/sbin/sshd", "-D", "-e"]
 

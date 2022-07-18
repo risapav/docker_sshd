@@ -13,14 +13,17 @@ git clone git@github.com:risapav/docker_sshd.git && cd docker_sshd
 Prepare Docker environment, Docker should be installed and running.
 
 ```sh
-# building pure sshd resvice with root access
-docker build https://github.com/risapav/docker_sshd.git -t docker_sshd
+# building pure sshd resvice with root access sourced from github
+docker build https://github.com/risapav/docker_sshd.git -t sshd
+
+# building pure sshd resvice with root access from local repository
+docker build -t sshd .
 
 or
 RSA_KEY ?= $(shell cat ~/.ssh/id_rsa.pub)
 
 # building sshd service with root access and user access
-docker build --build-arg SSH_PUB_KEY="$(cat ~/.ssh/id_rsa.pub)" --build-arg USERNAME="$(USER)" -t sshd .
+docker build --build-arg SSH_PUB_KEY="$(cat ~/.ssh/id_rsa.pub)" --build-arg USERNAME=$USER -t sshd .
 ```
 
 ## How to run container
@@ -85,7 +88,8 @@ docker inspect <id-or-name> | grep 'IPAddress' | head -n 1
 And now you can ssh as root on the container’s IP address (you can find it with docker inspect) or on port 49154 of the Docker daemon’s host IP address (ip address or ifconfig can tell you that) or localhost if on the Docker daemon host:
 
 ```sh
-ssh root@192.168.1.2 -p 49154
+ssh root@localhost -p 8022
+
 
 or
 
