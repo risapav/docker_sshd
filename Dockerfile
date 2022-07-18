@@ -35,20 +35,25 @@ ARG SSH_PUB_KEY
 ARG USERNAME
 
 # user account
-RUN  { \
-    echo '#!/bin/bash -eu'; \
-    echo 'echo ${USERNAME};\
-    echo 'echo ${SSH_PUB_KEY}; \
-    echo 'mkdir -p /home/${USERNAME}/.ssh'; \
-    echo 'adduser --home /home/${USERNAME} ${USERNAME}'; \
-#  echo 'useradd -m -U ${USERNAME}'; \
-    echo 'chmod 700 /home/${USERNAME}/.ssh'; \
-    echo 'echo "${SSH_PUB_KEY}" > /home/${USERNAME}/.ssh/authorized_keys'; \
-    echo 'chown ${USERNAME}:${USERNAME} -R /home/${USERNAME}'; \
-    echo 'chmod 600 /home/${USERNAME}/.ssh/authorized_keys';
-  } > /tmp/user_account.sh; \
-  chmod +x /tmp/user_account.sh; \
-  /tmp/user_account.sh;
+RUN if [[ -nz "$USERNAME" ]] ; \ 
+  then \ 
+    echo "Configure with user account --->  ${USERNAME}" \ 
+    echo "Public key ---> ${SSH_PUB_KEY}" \
+    { \
+      echo '#!/bin/bash -eu'; \
+      echo 'echo ${USERNAME};\
+      echo 'echo ${SSH_PUB_KEY}; \
+      echo 'mkdir -p /home/${USERNAME}/.ssh'; \
+      echo 'adduser --home /home/${USERNAME} ${USERNAME}'; \
+      #  echo 'useradd -m -U ${USERNAME}'; \
+      echo 'chmod 700 /home/${USERNAME}/.ssh'; \
+      echo 'echo "${SSH_PUB_KEY}" > /home/${USERNAME}/.ssh/authorized_keys'; \
+      echo 'chown ${USERNAME}:${USERNAME} -R /home/${USERNAME}'; \
+      echo 'chmod 600 /home/${USERNAME}/.ssh/authorized_keys';
+    } > /tmp/user_account.sh; \
+    chmod +x /tmp/user_account.sh; \
+    /tmp/user_account.sh; \
+  fi
 
 ENV TZ Europe/Bratislava
 
