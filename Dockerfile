@@ -11,7 +11,7 @@ RUN apt update && apt install -y \
   mkdir /var/run/sshd; \
   apt install -y \
     openssh-server \
-    mc; \
+   # mc; \
 # root permission
   sed -i 's/^#\(PermitRootLogin\) .*/\1 yes/' /etc/ssh/sshd_config; \
   sed -i 's/^\(UsePAM yes\)/# \1/' /etc/ssh/sshd_config; \
@@ -49,10 +49,13 @@ RUN if [[ -nz "$USERNAME" ]] ; \
       echo 'chmod 700 /home/${USERNAME}/.ssh'; \
       echo 'echo "${SSH_PUB_KEY}" > /home/${USERNAME}/.ssh/authorized_keys'; \
       echo 'chown ${USERNAME}:${USERNAME} -R /home/${USERNAME}'; \
-      echo 'chmod 600 /home/${USERNAME}/.ssh/authorized_keys';
+      echo 'chmod 600 /home/${USERNAME}/.ssh/authorized_keys'; \
+      echo 'exec "$@"'; \
     } > /tmp/user_account.sh; \
     chmod +x /tmp/user_account.sh; \
     /tmp/user_account.sh; \
+  else \
+    echo "Configuring only with root access..."; \
   fi
 
 ENV TZ Europe/Bratislava
