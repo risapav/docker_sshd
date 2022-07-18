@@ -50,7 +50,9 @@ RUN if [ ! -z "$USERNAME" ]; \
       echo '#!/bin/bash'; \
       echo 'echo "username #### $1"';\
       echo 'echo "key #### $2"'; \
-      echo 'adduser --home /home/$1'; \
+      echo 'useradd -d /home/$1 -m $1'; \
+      echo 'adduser $1 admin'; \
+      echo '# adduser --home /home/$1'; \
       echo 'mkdir -p /home/$1/.ssh'; \
       echo 'chmod 700 /home/$1/.ssh'; \
       echo 'echo $2 > /home/$1/.ssh/authorized_keys'; \
