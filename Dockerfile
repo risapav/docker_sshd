@@ -3,6 +3,12 @@ FROM debian:stable-slim
 #########################################################################################################
 # prepare sshd server
 #########################################################################################################
+ENV TZ Europe/Bratislava
+
+ENV ROOT_PASSWORD root
+
+EXPOSE 22
+
 # timezone
 RUN apt update && apt install -y \
     tzdata; \
@@ -57,12 +63,6 @@ RUN if [[ -nz "$USERNAME" ]] ; \
   else \
     echo "Configuring only with root access..."; \
   fi
-
-ENV TZ Europe/Bratislava
-
-ENV ROOT_PASSWORD root
-
-EXPOSE 22
 
 ENTRYPOINT ["entry_point.sh"]
 CMD    ["/usr/sbin/sshd", "-D", "-e"]
