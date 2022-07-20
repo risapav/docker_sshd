@@ -19,8 +19,7 @@ docker build https://github.com/risapav/docker_sshd.git -t sshd
 # building pure sshd resvice with root access from local repository
 docker build -t sshd .
 
-or
-RSA_KEY ?= $(shell cat ~/.ssh/id_rsa.pub)
+# or
 
 # building sshd service with root access and user access
 docker build --build-arg SSH_PUB_KEY="$(cat ~/.ssh/id_rsa.pub)" --build-arg USERNAME=$USER -t sshd .
@@ -34,7 +33,7 @@ You should run container:
 # with presets from Dockerfile
 docker run -d -P --name sshd sshd
 
-or
+# or
 
 # with changed environment variables
 docker run -d --name sshd -e TZ=Asia/Tokyo -e ROOT_PASSWORD=root -p 8022:22 sshd
