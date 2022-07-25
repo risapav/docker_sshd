@@ -70,7 +70,7 @@ RUN apt update && apt install -y \
 #  else \
     echo "############################################"; \
     echo "Configuring with root access only..."; \
-    echo "############################################"; \
+    echo "############################################"; 
 #  fi;
 
 ENTRYPOINT ["entry_point.sh"]
