@@ -44,10 +44,10 @@ RUN apt update && apt install -y \
   } > /usr/local/bin/entry_point.sh; \
   chmod +x /usr/local/bin/entry_point.sh; \
 #########################################################################################################
-# create user account
+# create script to add user account 
 #########################################################################################################
-  if [ ! -z "$USERNAME" ]; \ 
-  then \ 
+#  if [ ! -z "$USERNAME" ]; \ 
+#  then \ 
     echo "############################################"; \
     echo "Configuring with user ${USERNAME} access ..."; \
     echo "############################################"; \
@@ -55,23 +55,23 @@ RUN apt update && apt install -y \
       echo '#!/bin/bash'; \
       echo 'echo "username #### $1"';\
       echo 'echo "key #### $2"'; \
-      echo 'useradd -d /home/$1 -m $1'; \
+      echo 'useradd -m -d /home/$1 -s /bin/bash $1'; \
       echo 'echo "$1:${USER_PASSWORD}" | chpasswd'; \
       echo 'mkdir -p /home/$1/.ssh'; \
-      echo 'chmod 700 /home/$1/.ssh'; \
       echo 'echo $2 > /home/$1/.ssh/authorized_keys'; \
       echo 'chown $1:$1 -R /home/$1'; \
+      echo 'chmod 700 /home/$1/.ssh'; \
       echo 'chmod 600 /home/$1/.ssh/authorized_keys'; \
-    } > /tmp/user_account.sh; \
-    chmod +x /tmp/user_account.sh; \
-    cat /tmp/user_account.sh; \
-    ls -la /tmp; \
-    /tmp/user_account.sh "${USERNAME}" "${SSH_PUB_KEY}"; \
-  else \
+      echo '# usermod -a -G sudo $1'; \
+      } > /usr/local/bin/user_account.sh; \
+    chmod +x /usr/local/bin/user_account.sh; \
+    cat /usr/local/bin/user_account.sh; \
+#    /usr/local/bin/user_account.sh "${USERNAME}" "${SSH_PUB_KEY}"; \
+#  else \
     echo "############################################"; \
     echo "Configuring with root access only..."; \
     echo "############################################"; \
-  fi;
+#  fi;
 
 ENTRYPOINT ["entry_point.sh"]
 
