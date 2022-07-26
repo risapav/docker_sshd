@@ -22,15 +22,12 @@ ENV USER_PASSWORD ${USERNAME}
 
 EXPOSE 22
 
-# timezone
-RUN apt update && apt install -y \
-    tzdata; \
-  apt clean; \    
-# sshd
-  mkdir /var/run/sshd; \
-  apt install -y \
+# timezone & openssh_server install
+RUN mkdir -p /var/run/sshd; \
+    apt update && apt install -y \
     #mc \
-    openssh-server; \
+    openssh-server \
+    tzdata; \    
 # root permission
   sed -i 's/^#\(PermitRootLogin\) .*/\1 yes/' /etc/ssh/sshd_config; \
   sed -i 's/^\(UsePAM yes\)/# \1/' /etc/ssh/sshd_config; \
