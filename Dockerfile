@@ -64,7 +64,7 @@ RUN apt update && apt install -y \
 # example:
 # docker build --build-arg SSH_PUB_KEY="$(cat ~/.ssh/id_rsa.pub)" --build-arg USERNAME=$USER -t sshd .
 ############################################################
-  if [ ! -z "$USERNAME" && ! -z "$SSH_PUB_KEY" ]; \
+  if [ ! -z "$USERNAME" ]; \
   then \ 
     echo "############################################"; \
     echo "Configuring with user ${USERNAME} access ..."; \
