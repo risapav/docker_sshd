@@ -46,7 +46,7 @@ RUN mkdir -p /var/run/sshd; \
     echo 'echo "username #### $1"';\
     echo 'echo "key #### $2"'; \
     echo 'useradd -m -d /home/$1 -s /bin/bash $1'; \
-    echo 'echo "$1:${USER_PASSWORD}" | chpasswd'; \
+    echo '# echo "$1:${USER_PASSWORD}" | chpasswd'; \
     echo 'mkdir -p /home/$1/.ssh'; \
     echo 'echo $2 > /home/$1/.ssh/authorized_keys'; \
     echo 'chown $1:$1 -R /home/$1'; \
