@@ -66,7 +66,7 @@ RUN apt update && apt install -y \
 ############################################################
 echo "$USERNAME ${USERNAME}"; \
 echo "$SSH_PUB_KEY ${SSH_PUB_KEY}"; \
-  if [ ! -z "$USERNAME" ]; \
+  if [ ! -z "$USERNAME" && ! -z "$SSH_PUB_KEY" ]; \
   then \ 
     echo "############################################"; \
     echo "Configuring with user ${USERNAME} access ..."; \
