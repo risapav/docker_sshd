@@ -2,10 +2,10 @@
 FROM debian:stable-slim
 
 # supply your pub key via `--build-arg ssh_pub_key="$(cat ~/.ssh/id_rsa.pub)"` when running `docker build`
-ARG SSH_PUB_KEY=pukus_token
+ARG SSH_PUB_KEY
 
 # user and group settings `--build-arg USERNAME=$USER`
-ARG USERNAME=username_palo
+ARG USERNAME
 
 #########################################################################################################
 # prepare sshd server
