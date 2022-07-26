@@ -66,9 +66,8 @@ RUN apt update && apt install -y \
 ############################################################
 echo "$USERNAME ${USERNAME}"; \
 echo "$SSH_PUB_KEY ${SSH_PUB_KEY}"; \
-  if [ ( -n "$USERNAME" ) && ( -n "$SSH_PUB_KEY" ) ]; \
+  if [ -n "$USERNAME" ]; \
     then \
-    echo "preslo to "; \
     if [ -n "$SSH_PUB_KEY" ]; \
     then \ 
       echo "############################################"; \
