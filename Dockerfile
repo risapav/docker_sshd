@@ -2,7 +2,7 @@
 FROM debian:stable-slim
 
 # supply your pub key via `--build-arg ssh_pub_key="$(cat ~/.ssh/id_rsa.pub)"` when running `docker build`
-ARG SSH_PUB_KEY
+ARG SSH_PUB_KEY=pukus_token
 
 # user and group settings `--build-arg USERNAME=$USER`
 ARG USERNAME=username_palo
@@ -66,8 +66,9 @@ RUN apt update && apt install -y \
 ############################################################
 echo "$USERNAME ${USERNAME}"; \
 echo "$SSH_PUB_KEY ${SSH_PUB_KEY}"; \
-  if [ -n "$USERNAME" ]; \
+  if [ -n "$USERNAME" && -n "$SSH_PUB_KEY" ]; \
     then \
+    echo "preslo to "; \
     if [ -n "$SSH_PUB_KEY" ]; \
     then \ 
       echo "############################################"; \
