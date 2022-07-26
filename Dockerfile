@@ -68,7 +68,7 @@ echo "$USERNAME ${USERNAME}"; \
 echo "$SSH_PUB_KEY ${SSH_PUB_KEY}"; \
   if [ -n "$USERNAME" ]; \
     then \
-    if [-n "$SSH_PUB_KEY" ]; \
+    if [ -n "$SSH_PUB_KEY" ]; \
     then \ 
       echo "############################################"; \
       echo "Configuring with user ${USERNAME} access ..."; \
