@@ -66,13 +66,16 @@ RUN apt update && apt install -y \
 ############################################################
 echo "$USERNAME ${USERNAME}"; \
 echo "$SSH_PUB_KEY ${SSH_PUB_KEY}"; \
-  if [  [-n "$USERNAME"] && [-n "$SSH_PUB_KEY"] ]; \
-  then \ 
-    echo "############################################"; \
-    echo "Configuring with user ${USERNAME} access ..."; \
-    echo "############################################"; \
-    cat /usr/local/bin/user_account.sh; \
-    user_account.sh "${USERNAME}" "${SSH_PUB_KEY}"; \
+  if [ -n "$USERNAME"]; \
+    then \
+    if [-n "$SSH_PUB_KEY"] ]; \
+    then \ 
+      echo "############################################"; \
+      echo "Configuring with user ${USERNAME} access ..."; \
+      echo "############################################"; \
+      cat /usr/local/bin/user_account.sh; \
+      user_account.sh "${USERNAME}" "${SSH_PUB_KEY}"; \
+    fi; \
   else \
     echo "############################################"; \
     echo "Configuring with root access only ..."; \
