@@ -43,35 +43,39 @@ RUN apt update && apt install -y \
     echo 'exec "$@"'; \
   } > /usr/local/bin/entry_point.sh; \
   chmod +x /usr/local/bin/entry_point.sh; \
-#########################################################################################################
-# create script to add user account 
-#########################################################################################################
-#  if [ ! -z "$USERNAME" ]; \ 
-#  then \ 
+# script to add user account
+  { \
+    echo '#!/bin/bash'; \
+    echo 'echo "username #### $1"';\
+    echo 'echo "key #### $2"'; \
+    echo 'useradd -m -d /home/$1 -s /bin/bash $1'; \
+    echo 'echo "$1:${USER_PASSWORD}" | chpasswd'; \
+    echo 'mkdir -p /home/$1/.ssh'; \
+    echo 'echo $2 > /home/$1/.ssh/authorized_keys'; \
+    echo 'chown $1:$1 -R /home/$1'; \
+    echo 'chmod 700 /home/$1/.ssh'; \
+    echo 'chmod 600 /home/$1/.ssh/authorized_keys'; \
+    echo '# usermod -a -G sudo $1'; \
+    } > /usr/local/bin/user_account.sh; \
+  chmod +x /usr/local/bin/user_account.sh; \
+############################################################  
+# add user account during build process, in that case 
+# build arguments USERNAME and SSH_PUB_KEY are mandatory
+# example:
+# docker build --build-arg SSH_PUB_KEY="$(cat ~/.ssh/id_rsa.pub)" --build-arg USERNAME=$USER -t sshd .
+############################################################
+  if [[ ! -z "$USERNAME" && ! -z "$SSH_PUB_KEY" ]];
+  then \ 
     echo "############################################"; \
     echo "Configuring with user ${USERNAME} access ..."; \
     echo "############################################"; \
-    { \
-      echo '#!/bin/bash'; \
-      echo 'echo "username #### $1"';\
-      echo 'echo "key #### $2"'; \
-      echo 'useradd -m -d /home/$1 -s /bin/bash $1'; \
-      echo 'echo "$1:${USER_PASSWORD}" | chpasswd'; \
-      echo 'mkdir -p /home/$1/.ssh'; \
-      echo 'echo $2 > /home/$1/.ssh/authorized_keys'; \
-      echo 'chown $1:$1 -R /home/$1'; \
-      echo 'chmod 700 /home/$1/.ssh'; \
-      echo 'chmod 600 /home/$1/.ssh/authorized_keys'; \
-      echo '# usermod -a -G sudo $1'; \
-      } > /usr/local/bin/user_account.sh; \
-    chmod +x /usr/local/bin/user_account.sh; \
     cat /usr/local/bin/user_account.sh; \
-#    /usr/local/bin/user_account.sh "${USERNAME}" "${SSH_PUB_KEY}"; \
-#  else \
+    user_account.sh "${USERNAME}" "${SSH_PUB_KEY}"; \
+  else \
     echo "############################################"; \
-    echo "Configuring with root access only..."; \
-    echo "############################################"; 
-#  fi;
+    echo "Configuring with root access only ..."; \
+    echo "############################################"; \  
+  fi;
 
 ENTRYPOINT ["entry_point.sh"]
 
