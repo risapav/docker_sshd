@@ -43,16 +43,22 @@ RUN mkdir -p /var/run/sshd; \
 # script to add user account
   { \
     echo '#!/bin/bash'; \
-    echo 'echo "username #### $1"';\
-    echo 'echo "key #### $2"'; \
-    echo 'useradd -m -d /home/$1 -s /bin/bash $1'; \
-    echo '# echo "$1:${USER_PASSWORD}" | chpasswd'; \
-    echo 'mkdir -p /home/$1/.ssh'; \
-    echo 'echo $2 > /home/$1/.ssh/authorized_keys'; \
-    echo 'chown $1:$1 -R /home/$1'; \
-    echo 'chmod 700 /home/$1/.ssh'; \
-    echo 'chmod 600 /home/$1/.ssh/authorized_keys'; \
+    echo '# script to add a user to Linux system'; \
+    echo 'if [ $(id -u) -eq 0 ]; then'; \
+    echo '  echo "username #### $1"';\
+    echo '  echo "key #### $2"'; \
+    echo '  useradd -m -d /home/$1 -s /bin/bash $1'; \
+    echo '  echo "$1:$1" | chpasswd'; \
+    echo '  mkdir -p /home/$1/.ssh'; \
+    echo '  echo $2 > /home/$1/.ssh/authorized_keys'; \
+    echo '  chown $1:$1 -R /home/$1'; \
+    echo '  chmod 700 /home/$1/.ssh'; \
+    echo '  chmod 600 /home/$1/.ssh/authorized_keys'; \
     echo '# usermod -a -G sudo $1'; \
+    echo 'else'; \
+    echo '  echo "Only root may add a user to the system"';\
+    echo '  exit 2';\
+    echo 'fi'; \
     } > /usr/local/bin/user_account.sh; \
   chmod +x /usr/local/bin/user_account.sh; \
 ############################################################  
