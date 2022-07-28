@@ -47,11 +47,10 @@ help:
 	@echo "  clean   - Remove docker container image"
 	@echo "  exec    - Exec command inside running docker container"
 	@echo "  pull    - Pull request to Docker Hub site"
-  @echo "  run     - Start docker container"
+	@echo "  run     - Start docker container"
 	@echo "  ssh     - Remote ssh prompt with user privileges"
-  @echo "  stop    - Stop docker container and purge it from memory"
+	@echo "  stop    - Stop docker container and purge it from memory"
 	@echo
-	@echo "  get-update         - Get update from GIT repositories including sub-modules"
 	@echo	
 	@echo "Constants:"
 	@echo "  RSA_KEY=$(RSA_KEY)"
