@@ -38,7 +38,7 @@ exec:
 		$(CONTAINER_NAME) \
 		user_account.sh $(USER) "$(RSA_KEY)"
 
-# to run remote shell with user privileged
+# to run remote shell with user privileges
 ssh:
 	ssh $(USER)@localhost -p $(SSH_PORT)
 
