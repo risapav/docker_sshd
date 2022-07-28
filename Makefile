@@ -30,6 +30,7 @@ run:
 		--name $(CONTAINER_NAME) \
 		-p $(SSH_PORT):22 \
 		--hostname $(HOSTNAME) \
+		--volume $PWD/project:/project \
 		$(IMAGE_NAME)
 		
 # exec command inside running docker container    
@@ -40,7 +41,7 @@ exec:
 
 # to run remote shell with user privileges
 ssh:
-	ssh $(USER)@localhost -p $(SSH_PORT)
+	ssh $(USER)@localhost -p $(SSH_PORT) -t "cd /project; bash --login"
 
 help:
 	@echo "Commands for working with $(MAKER_NAME):"
