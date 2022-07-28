@@ -70,7 +70,7 @@ RUN mkdir -p /var/run/sshd; \
 # 1. during build:
 #      docker build --build-arg SSH_PUB_KEY="$(cat ~/.ssh/id_rsa.pub)" --build-arg USERNAME=$USER -t sshd .
 # 2. during run via exec:
-#	   docker run --name $(CONTAINER_NAME) --hostname $(CONTAINER_NAME) -p 8022:22 $(IMAGE_NAME)
+#      docker run --name $(CONTAINER_NAME) --hostname $(CONTAINER_NAME) -p 8022:22 $(IMAGE_NAME)
 #      docker exec $(CONTAINER_NAME) user_account.sh $(USER) "$(RSA_KEY)"
 #############################################################################################################
   if [ -n "$USERNAME" ]; \
