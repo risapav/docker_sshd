@@ -13,7 +13,7 @@ HOSTNAME := sshd_server
 # remove docker container image
 clean:
 	docker rmi $(IMAGE_NAME)
-  docker sys prune
+	docker sys prune
 
 # pull request to Docker Hub site
 pull:
