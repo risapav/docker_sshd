@@ -1,5 +1,5 @@
 .PHONY: clean exec pull run ssh stop
-.PHONY: help get-update
+.PHONY: help
 ############################### Native Makefile ###############################
 
 MAKER_NAME ?= "docker_sshd"
