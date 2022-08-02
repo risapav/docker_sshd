@@ -17,7 +17,7 @@ ARG USERNAME
 # docker run -d --name sshd -e TZ=Asia/Tokyo -e ROOT_PASSWORD=root -p 8022:22 sshd
 
 # sshd server options 
-ENV SSHD_OPTS "-p 22 -D"
+ENV SSHD_PORT 22
 
 # environment settings timezone -e TZ=Asia/Tokyo
 ENV TZ Europe/Bratislava
@@ -95,5 +95,5 @@ RUN mkdir -p /var/run/sshd; \
 ENTRYPOINT ["entry_point.sh"]
 
 # CMD    ["/usr/sbin/sshd", "-D", "-e"]
-CMD    ["/usr/sbin/sshd", ${SSHD_OPTS}, "-e"]
+CMD    ["/usr/sbin/sshd", "-D", "-e", "-p", "${SSHD_PORT}" ]
 
