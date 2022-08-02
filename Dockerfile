@@ -17,7 +17,7 @@ ARG USERNAME
 # docker run -d --name sshd -e TZ=Asia/Tokyo -e ROOT_PASSWORD=root -p 8022:22 sshd
 
 # sshd server options 
-ENV SSH_PORT="22" 
+ENV SSH_PORT=22 
 
 # environment settings timezone -e TZ=Asia/Tokyo
 ENV TZ Europe/Bratislava
