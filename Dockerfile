@@ -17,7 +17,7 @@ ARG USERNAME
 # docker run -d --name sshd -e TZ=Asia/Tokyo -e ROOT_PASSWORD=root -p 8022:22 sshd
 
 # sshd server options 
-ENV SSH_PORT=22 
+#ENV SSH_PORT=22 
 
 # environment settings timezone -e TZ=Asia/Tokyo
 ENV TZ Europe/Bratislava
@@ -25,7 +25,9 @@ ENV TZ Europe/Bratislava
 # environment settins -e ROOT_PASSWORD=pokus
 ENV ROOT_PASSWORD root
 
-EXPOSE ${SSH_PORT}
+#EXPOSE ${SSH_PORT}
+EXPOSE 22
+
 
 # timezone & openssh_server install
 RUN mkdir -p /var/run/sshd; \
@@ -94,6 +96,6 @@ RUN mkdir -p /var/run/sshd; \
 
 ENTRYPOINT ["entry_point.sh"]
 
-# CMD    ["/usr/sbin/sshd", "-D", "-e"]
-CMD    ["/usr/sbin/sshd", "-D", "-e", "-p ${SSH_PORT}" ]
+CMD    ["/usr/sbin/sshd", "-D", "-e"]
+#CMD    ["/usr/sbin/sshd", "-D", "-e", "-p ${SSH_PORT}" ]
 
