@@ -16,6 +16,9 @@ ARG USERNAME
 # example how to change environment variabes during docker run command:
 # docker run -d --name sshd -e TZ=Asia/Tokyo -e ROOT_PASSWORD=root -p 8022:22 sshd
 
+# sshd server options 
+ENV SSHD_OPTS -p 22 -D
+
 # environment settings timezone -e TZ=Asia/Tokyo
 ENV TZ Europe/Bratislava
 
@@ -91,5 +94,6 @@ RUN mkdir -p /var/run/sshd; \
 
 ENTRYPOINT ["entry_point.sh"]
 
-CMD    ["/usr/sbin/sshd", "-D", "-e"]
+# CMD    ["/usr/sbin/sshd", "-D", "-e"]
+CMD    ["/usr/sbin/sshd", "${SSHD_OPTS}", "-e"]
 
