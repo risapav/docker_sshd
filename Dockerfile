@@ -52,15 +52,20 @@ RUN mkdir -p /var/run/sshd; \
     echo '#!/bin/bash'; \
     echo '# script to add a user to Linux system'; \
     echo 'if [ $(id -u) -eq 0 ]; then'; \
-    echo '  echo "username #### $1"';\
-    echo '  echo "key #### $2"'; \
+    echo '  echo "username #### $1"'; \
     echo '  useradd -m -d /home/$1 -s /bin/bash $1'; \
     echo '  echo "$1:$1" | chpasswd'; \
-    echo '  mkdir -p /home/$1/.ssh'; \
-    echo '  echo $2 > /home/$1/.ssh/authorized_keys'; \
-    echo '  chown $1:$1 -R /home/$1'; \
-    echo '  chmod 700 /home/$1/.ssh'; \
-    echo '  chmod 600 /home/$1/.ssh/authorized_keys'; \
+    echo '  if [ "$2" ]; then'; \
+    echo '    echo "key #### $2"'; \
+    echo '    mkdir -p /home/$1/.ssh'; \
+    echo '    echo $2 > /home/$1/.ssh/authorized_keys'; \
+    echo '    chown $1:$1 -R /home/$1'; \
+    echo '    chmod 700 /home/$1/.ssh'; \
+    echo '    chmod 600 /home/$1/.ssh/authorized_keys'; \
+    echo '  else'; \
+    echo '    echo "no key presented ####"'; \
+    echo '    chown $1:$1 -R /home/$1'; \
+    echo '  fi'; \
     echo '# usermod -a -G sudo $1'; \
     echo 'else'; \
     echo '  echo "############################################"'; \
