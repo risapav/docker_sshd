@@ -55,6 +55,7 @@ RUN mkdir -p /var/run/sshd; \
     echo '  echo "username #### $1"'; \
     echo '  useradd -m -d /home/$1 -s /bin/bash $1'; \
     echo '  echo "$1:$1" | chpasswd'; \
+    echo '  chown $1:$1 -R /home/$1'; \
     echo '  if [ "$2" ]; then'; \
     echo '    echo "key #### $2"'; \
     echo '    mkdir -p /home/$1/.ssh'; \
@@ -64,7 +65,6 @@ RUN mkdir -p /var/run/sshd; \
     echo '    chmod 600 /home/$1/.ssh/authorized_keys'; \
     echo '  else'; \
     echo '    echo "no key presented ####"'; \
-    echo '    chown $1:$1 -R /home/$1'; \
     echo '  fi'; \
     echo '# usermod -a -G sudo $1'; \
     echo 'else'; \
