@@ -60,7 +60,7 @@ RUN mkdir -p /var/run/sshd; \
     echo '    echo "key #### $2"'; \
     echo '    mkdir -p /home/$1/.ssh'; \
     echo '    echo $2 > /home/$1/.ssh/authorized_keys'; \
-    echo '    chown $1:$1 -R /home/$1'; \
+    echo '    chown $1:$1 -R /home/$1/.ssh'; \
     echo '    chmod 700 /home/$1/.ssh'; \
     echo '    chmod 600 /home/$1/.ssh/authorized_keys'; \
     echo '  else'; \
