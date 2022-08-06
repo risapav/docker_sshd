@@ -42,9 +42,11 @@ docker run -d --name sshd -e TZ=Asia/Tokyo -e ROOT_PASSWORD=root -e USER_PASSWOR
 ```
 
 ```sh    
-docker run -d --name sshd -e TZ=Asia/Tokyo -e ROOT_PASSWORD=root -p 8022:22 sshd
+docker pull risapav/docker_sshd
 
-docker exec sshd user_account.sh $USER $(cat ~/.ssh/id_rsa.pub)
+docker run -d --name sshd -p 8022:22 sshd
+
+docker exec sshd user_account.sh "$USER" "$(cat ~/.ssh/id_rsa.pub)"
 
 ssh $USER@localhost -p 8022
 ```
