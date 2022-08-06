@@ -41,6 +41,14 @@ docker run -d --name sshd -e TZ=Asia/Tokyo -e ROOT_PASSWORD=root -p 8022:22 sshd
 docker run -d --name sshd -e TZ=Asia/Tokyo -e ROOT_PASSWORD=root -e USER_PASSWORD=$USER -p 8022:22 sshd
 ```
 
+```sh    
+docker run -d --name sshd -e TZ=Asia/Tokyo -e ROOT_PASSWORD=root -p 8022:22 sshd
+
+docker exec sshd user_account.sh $USER $(cat ~/.ssh/id_rsa.pub)
+
+ssh $USER@localhost -p 8022
+```
+
 ## How to use
 
 This container can be accessed by SSH and SFTP clients.
