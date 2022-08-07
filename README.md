@@ -42,6 +42,8 @@ docker run -d --name sshd -e TZ=Asia/Tokyo -e ROOT_PASSWORD=root -e USER_PASSWOR
 ```
 
 ```sh    
+ssh-keygen -t rsa -b 4096
+
 docker pull risapav/docker_sshd
 
 docker run -d --name sshd -p 8022:22 sshd
